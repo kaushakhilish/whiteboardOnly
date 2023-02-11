@@ -1,0 +1,11 @@
+.whiteboard{
+    width: 100%;
+    height: 100vh;
+    box-shadow: 5px 5px gray;
+    overflow: scroll;
+}
+.whiteboard > svg{
+    /* width: 100%;
+    height: 100%; */
+    background-color: #0002;
+}
