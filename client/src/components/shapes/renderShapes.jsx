@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
 
-const RenderShapes = ({ shapes, setShapes, isMousePressed }) => {
+const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes }) => {
     const { selectedBtn } = useContext(BoardContext);
 
     function onShapeClick(e) {
@@ -20,7 +20,10 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed }) => {
 
         if (selectedBtn === BUTTONS.ERASOR && isMousePressed) {
             setShapes(prv => {
-                let shps = prv.filter(itm => itm.id !== e.target.id)
+                let shps = prv.filter(itm => {
+                    setUndoShapes(prv => [...prv, itm]);
+                    return itm.id !== e.target.id
+                })
                 return shps
             });
         }

@@ -9,6 +9,14 @@ const BoardSchema = mongoose.Schema({
         type: Array,
         required: true
     },
+    createdBy: {
+        type: Object,
+        required: true,
+    },
+    users: {
+        type: Object,
+        required: true,
+    },
     date: {
         type: Date,
         default: Date.now

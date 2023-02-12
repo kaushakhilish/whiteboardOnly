@@ -1,34 +1,61 @@
 import React, { useContext, useEffect } from 'react';
 import { BoardContext } from '../context/boardContext';
-import { URL } from '../context/appContext';
+import { AppContext, URL } from '../context/appContext';
 import BoardCard from './boardCard';
 import styles from './home.module.css';
 
 const Home = ({ setPage }) => {
     const { allWhiteboards, setAllWhiteboards } = useContext(BoardContext);
+    const { user } = useContext(AppContext);
 
-    useEffect(() => {
-        async function getBoards() {
+    async function getBoards() {
+        if (user._id) {
             try {
-                let res = await fetch(URL + 'whitebaords');
+                let res = await fetch(URL + 'whitebaords?userId=' + user._id);
                 let data = await res.json();
                 console.log('data', data)
                 setAllWhiteboards(data)
             } catch (err) {
-                console.log('Error getting Boards', err)
+                console.error('Error getting Boards', err)
             }
         }
-        getBoards()
+    }
 
-        return () => { };
+    useEffect(() => {
+        getBoards()
     }, []);
 
     function createNewBoard() {
 
+        let boardName = prompt('Give a name to the board!');
+        let createdBy = user;
+
+        if (boardName && createdBy) {
+            fetch(URL + 'createWhiteboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    createdBy: createdBy,
+                    boardName: boardName,
+                    users: [createdBy]
+                })
+            }).then(res => {
+                console.log('res', res)
+                if (res.status === 200) {
+                    return res.json()
+                }
+            }).then(data => {
+                console.log(data)
+                getBoards()
+            }).catch(err => console.log('Error Creating board', err))
+        }
     }
 
     return (
         <div className={styles.home}>
+            <h1 style={{marginBottom: '50px', color: 'white'}}>Welcome {user?.name}</h1>
             <button onClick={createNewBoard} className={styles.creaWhiteboardBtn}>Create New Whiteboard!</button>
             {
                 allWhiteboards &&
