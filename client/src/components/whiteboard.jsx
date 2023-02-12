@@ -10,6 +10,7 @@ import { URL } from '../context/appContext';
 import { SocketContext } from '../context/socketProvider';
 import WhiteboardHeader from './whiteboardHeader';
 
+
 const Whiteboard = () => {
 
     const {
@@ -38,6 +39,10 @@ const Whiteboard = () => {
             setShapes(whiteboard.shapes)
         }
     }, [whiteboard])
+
+    useEffect(() => {
+        updateShapesOnDb()
+    }, [undoShapes])
 
 
     function updateShapesOnDb() {
@@ -231,7 +236,7 @@ const Whiteboard = () => {
     function endDrawing() {
         setIsMousePressed(false)
         setSelectionRectStyle(null)
-        if (selectedBtn !== BUTTONS.SELECT.SELECT && selectedBtn !== BUTTONS.SELECT.MOVE) {
+        if (selectedBtn !== BUTTONS.SELECT.SELECT && selectedBtn !== BUTTONS.SELECT.MOVE && selectedBtn !== BUTTONS.ERASOR) {
             updateShapesOnDb();
         }
     }
@@ -370,7 +375,6 @@ const Whiteboard = () => {
         if (newShapes, shape) {
             setShapes(newShapes);
             setUndoShapes(prv1 => [...prv1, shape]);
-            // setTimeout(() => {updateShapesOnDb()}, 1000)
         }
     }
     function redoMove() {
@@ -383,7 +387,6 @@ const Whiteboard = () => {
         if (newUnShapes, unShape) {
             setShapes(prv1 => [...prv1, unShape]);
             setUndoShapes(newUnShapes)
-            // setTimeout(() => {updateShapesOnDb()}, 1000)
         }
     }
 
@@ -479,7 +482,7 @@ const Whiteboard = () => {
                 >
                     <SvgDefs />
                     {(isMousePressed && selectionRectStyle) && <SelectionRect selectionRectStyle={selectionRectStyle} />}
-                    {shapes && <RenderShapes isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
+                    {shapes && <RenderShapes setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
                 </svg>
             </div>
         </>

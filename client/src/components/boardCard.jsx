@@ -12,7 +12,7 @@ export default function BoardCard({ board, setPage }) {
     }
 
     return (
-        <div className={styles.boardCard} style={{ marginTop: '20px', cursor: 'pointer' }} onClick={boardCardClick}>
+        <div className={styles.boardCard} onClick={boardCardClick}>
             <h2 >
                 {board.name}
             </h2>
