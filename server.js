@@ -12,7 +12,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
 const Boards = require('./models/Boards');
-const Users = require('./models/Users');
+const Users = require('./models/users');
 
 app.use(cors({
     'Access-Control-Allow-Origin': '*'
