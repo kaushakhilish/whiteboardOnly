@@ -70,6 +70,7 @@ const BoardContextProvider = ({ children }) => {
             let roomId = whiteboard._id;
             let id = Math.random();
 
+            console.log('board', whiteboard)
             console.log('id', roomId)
             if (roomId && id) {
                 let newSocket = io(URL, {

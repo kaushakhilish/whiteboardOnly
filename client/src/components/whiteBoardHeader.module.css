@@ -5,3 +5,15 @@
     padding: 10px 2%;
     font-family: sans-serif;
 }
+.box2{
+    display: flex;
+    align-items: center;
+    position: relative;
+
+}
+.box2 button{
+    background-color: transparent;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 2px solid blueviolet;
+}
