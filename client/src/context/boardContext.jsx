@@ -58,9 +58,10 @@ const BoardContextProvider = ({ children }) => {
     const [selectedBtn, setSelectedBtn] = useState(BUTTONS.SELECT.SELECT);
     const [selectedStrokeSize, setSelectedStrokeSize] = useState(STROKE_SIZES.STROKE_MID);
     const [selectedStrokeColor, setSelectedStrokeColor] = useState('#000');
-    const [selectedFillColor, setSelectedFillColor] = useState('none');
+    const [selectedFillColor, setSelectedFillColor] = useState('#ffffff00');
     const [whiteboard, setWhiteboard] = useState(null);
     const [allWhiteboards, setAllWhiteboards] = useState(null);
+    const [selectedShapeIds, setSelectedShapeIds] = useState([]);
 
     const { socket, setSocket } = useContext(SocketContext);
 
@@ -101,7 +102,9 @@ const BoardContextProvider = ({ children }) => {
             whiteboard,
             setWhiteboard,
             allWhiteboards,
-            setAllWhiteboards
+            setAllWhiteboards,
+            selectedShapeIds, 
+            setSelectedShapeIds
         }}>
             {children}
         </BoardContext.Provider>

@@ -15,6 +15,7 @@
 .msgContainer{
     box-shadow: inset 0px 0px 5px #ddd;
     padding: 5px 0;
+    min-height: 200px;
 }
 .inputBox{
     display: flex;

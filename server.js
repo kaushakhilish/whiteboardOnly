@@ -22,6 +22,46 @@ app.use(express.json());
 
 app.use(express.static('client/dist'))
 
+app.get('/messages/:boardId', async (req, res) => {
+    let id = req.params.boardId;
+
+    if (id) {
+        try {
+            const board = await Boards.findById(id);
+
+            if (board) {
+                res.status(200).json(board.chats);
+            }
+            res.status(404).end()
+        } catch (err) {
+            console.log(err)
+            res.status(500).end()
+        }
+    }
+})
+
+app.post('/messages', async (req, res) => {
+    let boardId = req.body.boardId;
+    let message = req.body.message;
+    message.time = new Date();
+    
+    if (boardId && message) {
+        try {
+            const updatedBoard = await Boards.updateOne(
+                { _id: boardId },
+                { $push: { chats: message } }
+            );
+
+            if (updatedBoard) {
+                res.status(200).json(updatedBoard);
+            }
+            res.status(404).end()
+        } catch (err) {
+            console.log(err)
+            res.status(500).end()
+        }
+    }
+})
 
 app.post('/login', async (req, res) => {
     let userEmail = req.body.email;
@@ -192,6 +232,11 @@ io.on('connection', (socket) => {
         console.log('boardUpdate', BoardUsers)
         socket.broadcast.to(roomId).emit('board_updated', { userId, BoardUsers })
     })
+    socket.on('new_message', ({ roomId }) => {
+        console.log('new_message')
+        socket.broadcast.to(roomId).emit('new_message', { roomId })
+    })
+
     socket.on('disconnect', () => {
         BoardUsers = BoardUsers.filter((BoardUser) => {
             console.log(BoardUser, socket.id)

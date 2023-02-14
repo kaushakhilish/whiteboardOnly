@@ -17,6 +17,10 @@ const BoardSchema = mongoose.Schema({
         type: Object,
         required: true,
     },
+    chats: {
+        type: Array,
+        required: true,
+    },
     date: {
         type: Date,
         default: Date.now

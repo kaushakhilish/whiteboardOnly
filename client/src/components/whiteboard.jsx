@@ -9,6 +9,7 @@ import EditInput from './editInput';
 import { URL } from '../context/appContext';
 import { SocketContext } from '../context/socketProvider';
 import WhiteboardHeader from './whiteboardHeader';
+import MsgContextProvider from '../context/msgContext';
 
 
 const Whiteboard = () => {
@@ -44,7 +45,6 @@ const Whiteboard = () => {
         updateShapesOnDb()
     }, [undoShapes])
 
-
     function updateShapesOnDb() {
         console.log('shahpes', whiteboard)
         if (shapes && whiteboard) {
@@ -69,7 +69,6 @@ const Whiteboard = () => {
         }
     }
 
-
     function createLine(lineType, ox, oy) {
         console.log(lineType)
         let strokeWIdth;
@@ -90,6 +89,7 @@ const Whiteboard = () => {
         if (lineType === BUTTONS.DRAW.HIGHLIGHTER) {
             style.opacity = 0.5;
         }
+
         let shape = {
             id: Math.random() + '',
             type: BUTTONS.DRAW.PENCIL,
@@ -462,7 +462,9 @@ const Whiteboard = () => {
     return (
         <>
             <div className={styles.whiteboard}>
-                <WhiteboardHeader />
+                <MsgContextProvider>
+                    <WhiteboardHeader />
+                </MsgContextProvider>
                 <ButtonBox
                     undoMove={undoMove}
                     redoMove={redoMove}
