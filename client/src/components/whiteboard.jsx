@@ -12,6 +12,7 @@ import WhiteboardHeader from './whiteboardHeader';
 import MsgContextProvider from '../context/msgContext';
 
 
+
 const Whiteboard = () => {
 
     const {
@@ -44,6 +45,7 @@ const Whiteboard = () => {
     useEffect(() => {
         updateShapesOnDb()
     }, [undoShapes])
+
 
     function updateShapesOnDb() {
         console.log('shahpes', whiteboard)
