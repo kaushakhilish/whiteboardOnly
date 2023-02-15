@@ -29,7 +29,7 @@ const ChatBox = () => {
     }, []);
 
     function getMessages(){
-        fetch(URL+'messages/'+whiteboard._id)
+        fetch(URL+'whiteboard/messages/'+whiteboard._id)
         .then(res => res.json())
         .then(data => {
             console.log('messages', data)
@@ -48,7 +48,7 @@ const ChatBox = () => {
         }
         console.log(msg, whiteboard, user)
         if (msg && whiteboard && user) {
-            fetch(URL + 'messages', {
+            fetch(URL + 'whiteboard/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -81,7 +81,7 @@ const ChatBox = () => {
             {/* {!showMsg && <ThreadList  />} */}
             {showMsg && <div className={styles.msgContainer}>
                 {
-                    messages?.map(msg => <Message key={msg._id} message={msg} />)
+                    messages?.map(msg => <Message key={msg.time} message={msg} />)
                 }
             </div>}
 

@@ -15,7 +15,7 @@ const WhiteboardHeader = () => {
         let email = prompt('Enter Email');
         console.log(email, whiteboard, user)
         if (email) {
-            fetch(URL + 'addUser', {
+            fetch(URL + 'whiteboard/addUser', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

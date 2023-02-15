@@ -11,7 +11,7 @@ const Home = ({ setPage }) => {
     async function getBoards() {
         if (user._id) {
             try {
-                let res = await fetch(URL + 'whitebaords?userId=' + user._id);
+                let res = await fetch(URL + 'whiteboard/all/?userId=' + user._id);
                 let data = await res.json();
                 console.log('data', data)
                 setAllWhiteboards(data)
@@ -31,7 +31,7 @@ const Home = ({ setPage }) => {
         let createdBy = user;
 
         if (boardName && createdBy) {
-            fetch(URL + 'createWhiteboard', {
+            fetch(URL + 'whiteboard/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,8 +1,19 @@
+.whiteboardPageBox{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 .whiteboard{
     width: 100%;
-    height: 100vh;
+    /* height: 100%; */
     box-shadow: 5px 5px gray;
     overflow: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.whiteboard::-webkit-scrollbar {
+  display: none;
 }
 .whiteboard > svg{
     /* width: 100%;

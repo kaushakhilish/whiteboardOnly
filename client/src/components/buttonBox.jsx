@@ -15,7 +15,7 @@ import PencilBox from './pencilBox';
 import { BoardContext, BUTTONS } from '../context/boardContext';
 import erasorImg from '../assets/erasor.svg';
 
-const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb }) => {
+const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb, setEditInputPos }) => {
     const {
         selectedBtn,
         setSelectedBtn,
@@ -32,12 +32,20 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
     const [isGrabbed, setIsGrabbed] = useState(false);
 
     const buttonBox = useRef(null);
+    const btnBoxMoveBtnRef = useRef(null);
 
     useEffect(() => {
-        if(selectedBtn === BUTTONS.ERASOR){
+        if (selectedBtn === BUTTONS.ERASOR) {
             board.current.style.cursor = `url(${erasorImg}), auto`;
-        }else{
+        } else if (selectedBtn === BUTTONS.SELECT.MOVE) {
+            board.current.style.cursor = `grab`;
+        }
+        else {
             board.current.style.cursor = 'auto';
+        }
+
+        if (selectedBtn !== BUTTONS.TEXT) {
+            setEditInputPos(null)
         }
         setOpenShapes(hasActiveNestedButtons(BUTTONS.SHAPES))
         setOpenLines(hasActiveNestedButtons(BUTTONS.LINE))
@@ -90,27 +98,16 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
         let color = e.target.value;
         setSelectedStrokeColor(color);
     }
-    function undoBtnClickHanlder() {
-        // if (shapes.length) {
-        //     setShapes(prv => {
-        //         console.log('poping last item')
-        //         prv.pop();
-        //         return prv;
-        //     })
-        //     setUndoShapes(prv => [...prv, shapes[shapes.length - 1]])
-        // }
-
-    }
-    function redoBtnClickHanlder() {
-
-    }
     function moveButtonBoxMouseDown(e) {
         console.log(e)
         setIsGrabbed(true)
+        // e.target.style.border = '1px solid blue';
+        // e.target.style.transform = 'scale(5)';
     }
     function moveButtonBoxMouseUp(e) {
         console.log(e)
         setIsGrabbed(false)
+        // e.target.style.transform = 'scale(1)';
     }
     function moveButtonBoxHandler(e) {
         if (isGrabbed) {
@@ -119,13 +116,13 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
             let btnBox = buttonBox.current;
             let btnBoxHeight = getComputedStyle(btnBox).height;
             let btnBoxWidth = getComputedStyle(btnBox).width;
-            console.log(cx, cy, btnBoxHeight);
+            // console.log(cx, cy, btnBoxHeight);
             btnBox.style.left = (cx - parseInt(btnBoxWidth) + 20) + 'px';
             btnBox.style.top = (cy - parseInt(btnBoxHeight) + 20) + 'px';
         }
     }
 
-    function undoRedoMouseUp(){
+    function undoRedoMouseUp() {
         // updateShapesOnDb();
     }
     return (
@@ -243,13 +240,13 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
 
             <div>
                 <ActionButton
+                    ref={btnBoxMoveBtnRef}
                     onMouseMove={moveButtonBoxHandler}
                     onMouseDown={moveButtonBoxMouseDown}
                     onMouseUp={moveButtonBoxMouseUp}
                     onClick={moveButtonBoxHandler}
                     style={
-                        isGrabbed ? { color: 'gray', cursor: 'grabbing' }
-                            : { color: 'gray', cursor: 'grab' }
+                        isGrabbed ? { color: 'gray', cursor: 'grabbing' } : { color: 'gray', cursor: 'grab' }
                     }
                     buttonName={''}>
                     <TbGripHorizontal />

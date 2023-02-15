@@ -11,12 +11,11 @@ import { SocketContext } from '../context/socketProvider';
 import WhiteboardHeader from './whiteboardHeader';
 import MsgContextProvider from '../context/msgContext';
 
-
-
 const Whiteboard = () => {
 
     const {
         selectedBtn,
+        setSelectedBtn,
         selectedStrokeSize,
         selectedStrokeColor,
         selectedFillColor,
@@ -33,7 +32,6 @@ const Whiteboard = () => {
     const [editInputValue, setEditInputValue] = useState('');
     const [editInputPos, setEditInputPos] = useState(null);
     const board = useRef(null);
-    const editInputRef = useRef(null);
 
     useEffect(() => {
         console.log('white', whiteboard)
@@ -46,11 +44,15 @@ const Whiteboard = () => {
         updateShapesOnDb()
     }, [undoShapes])
 
+    useEffect(() => {
+        let edtInp = document.querySelector('#editInput');
+        edtInp?.focus();
+    }, [editInputPos])
 
     function updateShapesOnDb() {
         console.log('shahpes', whiteboard)
         if (shapes && whiteboard) {
-            fetch(URL + 'whitebaord', {
+            fetch(URL + 'whiteboard', {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -229,13 +231,17 @@ const Whiteboard = () => {
             setCurInd(shapes.length);
         }
         if (selectedBtn === BUTTONS.TEXT) {
-            setEditInputPos({ x: ox, y: oy });
-            // let edtInp = document.querySelector('#editInput');
-            // edtInp.focus();
-            // console.log(edtInp)
-        }
+            if(!editInputPos){
+                setEditInputPos({ x: ox, y: oy });
+                setIsMousePressed(false)
+                // setSelectedBtn(BUTTONS.SELECT.SELECT)
+            }
+        }else{
+            setEditInputPos(null);
+        } 
     }
     function endDrawing() {
+        console.log('End')
         setIsMousePressed(false)
         setSelectionRectStyle(null)
         if (selectedBtn !== BUTTONS.SELECT.SELECT && selectedBtn !== BUTTONS.SELECT.MOVE && selectedBtn !== BUTTONS.ERASOR) {
@@ -361,6 +367,12 @@ const Whiteboard = () => {
                 })
             }
 
+            if(selectedBtn === BUTTONS.SELECT.MOVE){
+                // console.log(e)
+                let container = document.getElementById('whiteboardContainer');
+                container.scrollBy((e.movementX * -1), (e.movementY * -1))
+            }
+
         }
     }
 
@@ -394,7 +406,7 @@ const Whiteboard = () => {
 
     function editInputChange(e) {
         console.log(editInputValue)
-        setEditInputValue(e.target.value);
+        setEditInputValue(e.target.innerText);
     }
 
     function setTextShape(e) {
@@ -405,20 +417,21 @@ const Whiteboard = () => {
             if (selectedStrokeSize === STROKE_SIZES.STROKE_THICK) { strokeWIdth = '5' }
 
             let style = {
-                fill: selectedFillColor,
-                stroke: selectedStrokeColor,
-                strokeWidth: strokeWIdth,
-                font: 'bold 30px sans-serif'
+                fill: selectedStrokeColor,
+                // stroke: selectedStrokeColor,
+                // strokeWidth: strokeWIdth,
+                font: 'normal 20px sans-serif'
             }
             let props = {
                 value: editInputValue,
                 x: editInputPos.x,
-                y: editInputPos.y
+                y: editInputPos.y + 10
             }
             let textShape = createShape(BUTTONS.TEXT, style, props);
             setShapes(prv => [...prv, textShape]);
             setEditInputValue('')
             setEditInputPos(null)
+            setCurInd(shapes.length);
         }
     }
 
@@ -462,14 +475,15 @@ const Whiteboard = () => {
 
 
     return (
-        <>
-            <div className={styles.whiteboard}>
-                <MsgContextProvider>
-                    <WhiteboardHeader />
-                </MsgContextProvider>
+        <div className={styles.whiteboardPageBox}>
+            <MsgContextProvider>
+                <WhiteboardHeader />
+            </MsgContextProvider>
+            <div id='whiteboardContainer' className={styles.whiteboard}>
                 <ButtonBox
                     undoMove={undoMove}
                     redoMove={redoMove}
+                    setEditInputPos={setEditInputPos}
                     board={board}
                     updateShapesOnDb={updateShapesOnDb}
                     isMousePressed={isMousePressed}
@@ -489,7 +503,7 @@ const Whiteboard = () => {
                     {shapes && <RenderShapes setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
                 </svg>
             </div>
-        </>
+        </div>
 
     );
 }

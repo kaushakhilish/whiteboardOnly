@@ -11,7 +11,7 @@ const SignUp = ({ setPage }) => {
         let password = e.target[2].value;
         console.log(userName, email, password)
         if (userName && email && password) {
-            fetch(URL+'signUp', {
+            fetch(URL+'users/signUp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

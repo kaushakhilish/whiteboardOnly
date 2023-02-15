@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
+import RenderText from './renderText';
 import ShapeCover from './shapeCover';
 
 const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes }) => {
@@ -10,7 +11,13 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes }) => {
 
         if (selectedBtn === BUTTONS.ERASOR) {
             setShapes(prv => {
-                let shps = prv.filter(itm => itm.id !== e.target.id)
+                let shps = prv.filter(itm => {
+                    if (itm.id === e.target.id) {
+                        setUndoShapes(prv => [...prv, itm])
+                        return false
+                    }
+                    return true
+                })
                 return shps
             });
         }
@@ -19,10 +26,14 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes }) => {
     function shapeMouseMove(e) {
 
         if (selectedBtn === BUTTONS.ERASOR && isMousePressed) {
+            console.log('Erasor', e)
             setShapes(prv => {
                 let shps = prv.filter(itm => {
-                    setUndoShapes(prv => [...prv, itm]);
-                    return itm.id !== e.target.id
+                    if (itm.id === e.target.id) {
+                        setUndoShapes(prv => [...prv, itm])
+                        return false
+                    }
+                    return true
                 })
                 return shps
             });
@@ -129,16 +140,19 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes }) => {
                                 />
                             </ShapeCover>
                         case SHAPES.TEXT:
-                            return <ShapeCover key={shape.id} shape={shape}>
-                                <text
-                                    key={shape.id}
-                                    x={shape.props.x}
-                                    y={shape.props.y}
-                                    style={shape.style}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
-                                >{shape.props.value}</text>
-                            </ShapeCover>
+                            return <RenderText key={shape.id} shape={shape}
+                                onClick={onShapeClick} onMouseMove={shapeMouseMove} />
+                        // <ShapeCover key={shape.id} shape={shape}>
+                        //     <text
+                        //         id={shape.id} 
+                        //         key={shape.id}
+                        //         x={shape.props.x}
+                        //         y={shape.props.y}
+                        //         style={shape.style}
+                        //         onClick={onShapeClick}
+                        //         onMouseMove={shapeMouseMove}
+                        //     >{shape.props.value}</text>
+                        // </ShapeCover>
                     }
                 }
             )}

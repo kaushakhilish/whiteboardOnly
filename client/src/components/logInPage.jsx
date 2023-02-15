@@ -13,7 +13,7 @@ const LogInPage = ({ setPage }) => {
         console.log(email, password)
 
         if (email && password) {
-            fetch(URL + 'login', {
+            fetch(URL + 'users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
