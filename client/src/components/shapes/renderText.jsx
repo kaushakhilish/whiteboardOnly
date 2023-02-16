@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ShapeCover from './shapeCover';
 
-const RenderText = ({ shape, onClick, onMouseMove }) => {
+const RenderText = ({ shape, onClick, onMouseMove, onMouseUp }) => {
     const [text, setText] = useState([]);
 
     useEffect(() => {
@@ -20,8 +20,9 @@ const RenderText = ({ shape, onClick, onMouseMove }) => {
                 style={shape.style}
                 onClick={onClick}
                 onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
             >
-                {text?.map((txt, i) => <tspan id={shape.id} x={shape.props.x} dy={i * 20}>{txt}<br /></tspan>)}
+                {text?.map((txt, i) => <tspan key={txt+shape.id} id={shape.id} dy={i * 20}>{txt}<br /></tspan>)}
             </text>
         </ShapeCover>
     );

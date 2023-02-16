@@ -62,6 +62,7 @@ const BoardContextProvider = ({ children }) => {
     const [whiteboard, setWhiteboard] = useState(null);
     const [allWhiteboards, setAllWhiteboards] = useState(null);
     const [selectedShapeIds, setSelectedShapeIds] = useState([]);
+    const [movingShape, setMovingShape] = useState(false);
 
     const { socket, setSocket } = useContext(SocketContext);
 
@@ -104,7 +105,9 @@ const BoardContextProvider = ({ children }) => {
             allWhiteboards,
             setAllWhiteboards,
             selectedShapeIds, 
-            setSelectedShapeIds
+            setSelectedShapeIds,
+            movingShape, 
+            setMovingShape
         }}>
             {children}
         </BoardContext.Provider>

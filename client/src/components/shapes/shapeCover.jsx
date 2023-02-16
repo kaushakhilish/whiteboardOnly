@@ -4,7 +4,7 @@ import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
 const ShapeCover = ({ children, shape }) => {
     const [rectProps, setRectProps] = useState({})
     const [selected, setSelected] = useState(false);
-    const { selectedShapeIds, setSelectedShapeIds, selectedBtn } = useContext(BoardContext);
+    const { selectedShapeIds, setSelectedShapeIds, selectedBtn, movingShape, setMovingShape } = useContext(BoardContext);
     const gRef = useRef(null);
 
     useEffect(() => {
@@ -35,33 +35,51 @@ const ShapeCover = ({ children, shape }) => {
         } else {
             setSelected(false);
         }
-    }, [selectedShapeIds])
+    }, [selectedShapeIds, movingShape])
 
     function shapeClickHandler() {
         // alert('Clicked')
+        // if (selectedBtn === BUTTONS.SELECT.SELECT) {
+        //     if (selected) {
+        //         // setSelectedShapeIds(prv => {
+        //         //     let newIds = prv.filter(id => { return id !== shape.id });
+        //         //     return newIds
+        //         // })
+        //         setSelectedShapeIds([])
+        //     } else {
+        //         // setSelectedShapeIds(prv => [...prv, shape.id])\
+        //         setSelectedShapeIds([shape.id])
+        //     }
+        // }
+    }
+
+    function onMouseOver(e) {
         if (selectedBtn === BUTTONS.SELECT.SELECT) {
-            if (selected) {
-                // setSelectedShapeIds(prv => {
-                //     let newIds = prv.filter(id => { return id !== shape.id });
-                //     return newIds
-                // })
-                setSelectedShapeIds([])
-            } else {
-                // setSelectedShapeIds(prv => [...prv, shape.id])\
-                setSelectedShapeIds([shape.id])
-            }
+            e.target.style.cursor = 'move';
+        }
+    }
+    function onMouseOut(e) {
+        e.target.style.cursor = 'auto';
+    }
+
+    function onMouseUp() {
+        setMovingShape(false)
+        if (selectedBtn === BUTTONS.SELECT.SELECT) {
+            setSelectedShapeIds([shape.id])
         }
     }
     return (
-        <g ref={gRef} onClick={shapeClickHandler}>
-            {
-                selected && <rect x={rectProps.x} y={rectProps.y}
-                    width={rectProps.w} height={rectProps.h}
-                    style={rectProps.style}
-                />
-            }
-            {children}
-        </g>
+        <>
+            {<g ref={gRef} onMouseUp={onMouseUp} onMouseOver={onMouseOver} onMouseOut={onMouseOut} onClick={shapeClickHandler}>
+                {/* {
+                    (selected && !movingShape) && <rect x={rectProps.x} y={rectProps.y}
+                        width={rectProps.w} height={rectProps.h}
+                        style={rectProps.style}
+                    />
+                } */}
+                {children}
+            </g>}
+        </>
     );
 }
 

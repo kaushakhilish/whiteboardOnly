@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './actionButton.module.css'
 
-const ActionButton = ({ buttonName, selectedBtn, onClick, onMouseMove, onMouseDown, onMouseUp, children, style, ref }) => {
+const ActionButton = ({ buttonName, selectedBtn, onClick, onMouseMove, onMouseDown, onMouseUp, children, style }) => {
 
     function hasActiveNestedButtons(obj) {
         return (Object.values(obj).filter(vl => { if (selectedBtn === vl) { return true } }).length > 0)
@@ -9,7 +9,7 @@ const ActionButton = ({ buttonName, selectedBtn, onClick, onMouseMove, onMouseDo
 
     return (
         <button
-            ref={ref}
+            // ref={ref}
             onClick={onClick}
             onMouseMove={onMouseMove}
             onMouseDown={onMouseDown}

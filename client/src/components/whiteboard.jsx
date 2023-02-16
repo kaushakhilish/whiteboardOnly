@@ -87,7 +87,8 @@ const Whiteboard = () => {
             fill: selectedFillColor,
             stroke: selectedStrokeColor,
             strokeWidth: strokeWIdth,
-            opacity: 1
+            opacity: 1,
+            transform: 'translate(0px, 0px)',
         }
 
         if (lineType === BUTTONS.DRAW.HIGHLIGHTER) {
@@ -137,6 +138,7 @@ const Whiteboard = () => {
             fill: selectedFillColor,
             stroke: selectedStrokeColor,
             strokeWidth: strokeWIdth,
+            transform: 'translate(0px, 0px)',
         }
 
         if (selectedBtn === BUTTONS.SELECT.SELECT) {
@@ -254,16 +256,16 @@ const Whiteboard = () => {
 
         if (isMousePressed) {
             if (selectedBtn === BUTTONS.SELECT.SELECT) {
-                setSelectionRectStyle(prv => {
-                    let w = Math.abs(ox - Number(prv.x));
-                    let h = Math.abs(oy - Number(prv.y));
+                // setSelectionRectStyle(prv => {
+                //     let w = Math.abs(ox - Number(prv.x));
+                //     let h = Math.abs(oy - Number(prv.y));
 
-                    let newStyle = { ...prv };
-                    newStyle.width = w;
-                    newStyle.height = h;
+                //     let newStyle = { ...prv };
+                //     newStyle.width = w;
+                //     newStyle.height = h;
 
-                    return newStyle;
-                })
+                //     return newStyle;
+                // })
             }
             if (selectedBtn === BUTTONS.DRAW.PENCIL || selectedBtn === BUTTONS.DRAW.HIGHLIGHTER) {
                 console.log('pencil')
@@ -500,7 +502,7 @@ const Whiteboard = () => {
                 >
                     <SvgDefs />
                     {(isMousePressed && selectionRectStyle) && <SelectionRect selectionRectStyle={selectionRectStyle} />}
-                    {shapes && <RenderShapes setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
+                    {shapes && <RenderShapes updateShapesOnDb={updateShapesOnDb} setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
                 </svg>
             </div>
         </div>

@@ -240,7 +240,7 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
 
             <div>
                 <ActionButton
-                    ref={btnBoxMoveBtnRef}
+                    // ref={btnBoxMoveBtnRef}
                     onMouseMove={moveButtonBoxHandler}
                     onMouseDown={moveButtonBoxMouseDown}
                     onMouseUp={moveButtonBoxMouseUp}
