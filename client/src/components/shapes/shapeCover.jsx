@@ -1,11 +1,26 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
+import ShapeProperties from '../utils/ShapeProperties';
 
-const ShapeCover = ({ children, shape }) => {
+const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes }) => {
     const [rectProps, setRectProps] = useState({})
     const [selected, setSelected] = useState(false);
-    const { selectedShapeIds, setSelectedShapeIds, selectedBtn, movingShape, setMovingShape } = useContext(BoardContext);
+    const [shapeGStyle, setShapeGStyle] = useState({});
+    const {
+        selectedShapeIds, 
+        setSelectedShapeIds, 
+        selectedBtn,
+        movingShape, 
+        setMovingShape, 
+        setShapePropCompVals
+    } = useContext(BoardContext);
+
     const gRef = useRef(null);
+
+
+    useEffect(() => {
+
+    }, [])
 
     useEffect(() => {
         let bbox = gRef.current.getBBox();
@@ -37,7 +52,7 @@ const ShapeCover = ({ children, shape }) => {
         }
     }, [selectedShapeIds, movingShape])
 
-    function shapeClickHandler() {
+    function shapeClickHandler(e) {
         // alert('Clicked')
         // if (selectedBtn === BUTTONS.SELECT.SELECT) {
         //     if (selected) {
@@ -51,8 +66,30 @@ const ShapeCover = ({ children, shape }) => {
         //         setSelectedShapeIds([shape.id])
         //     }
         // }
+        let bbox = gRef.current.getBBox();
+        if(shape){
+            setShapePropCompVals({
+                x: bbox.x + bbox.width / 2 - 20,
+                y: bbox.y + bbox.height + 60,
+                id: e.target.id
+            })
+        }
     }
-
+    function shapeMouseMove(e) {
+        if (selectedBtn === BUTTONS.ERASOR && isMousePressed) {
+            // console.log('Erasor', e)
+            setShapes(prv => {
+                let shps = prv.filter(itm => {
+                    if (itm.id === e.target.id) {
+                        setUndoShapes(prv => [...prv, itm])
+                        return false
+                    }
+                    return true
+                })
+                return shps
+            });
+        }
+    }
     function onMouseOver(e) {
         if (selectedBtn === BUTTONS.SELECT.SELECT) {
             e.target.style.cursor = 'move';
@@ -70,14 +107,22 @@ const ShapeCover = ({ children, shape }) => {
     }
     return (
         <>
-            {<g ref={gRef} onMouseUp={onMouseUp} onMouseOver={onMouseOver} onMouseOut={onMouseOut} onClick={shapeClickHandler}>
-                {/* {
+            {<g ref={gRef}
+                onMouseUp={onMouseUp}
+                onMouseOver={onMouseOver}
+                onMouseOut={onMouseOut}
+                onClick={shapeClickHandler}
+                onMouseMove={shapeMouseMove}
+                style={{...shapeGStyle}}
+            >
+                {
                     (selected && !movingShape) && <rect x={rectProps.x} y={rectProps.y}
                         width={rectProps.w} height={rectProps.h}
                         style={rectProps.style}
                     />
-                } */}
+                }
                 {children}
+                {/* {(selected && !movingShape) && <ShapeProperties rectProps={rectProps} />} */}
             </g>}
         </>
     );

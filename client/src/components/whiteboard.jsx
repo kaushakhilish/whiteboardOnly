@@ -10,6 +10,8 @@ import { URL } from '../context/appContext';
 import { SocketContext } from '../context/socketProvider';
 import WhiteboardHeader from './whiteboardHeader';
 import MsgContextProvider from '../context/msgContext';
+import ShapeProperties from './utils/ShapeProperties';
+import ShapeProperties2 from './utils/ShapeProperties2';
 
 const Whiteboard = () => {
 
@@ -504,6 +506,7 @@ const Whiteboard = () => {
                     {(isMousePressed && selectionRectStyle) && <SelectionRect selectionRectStyle={selectionRectStyle} />}
                     {shapes && <RenderShapes updateShapesOnDb={updateShapesOnDb} setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
                 </svg>
+                <ShapeProperties2 />
             </div>
         </div>
 

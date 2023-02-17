@@ -24,7 +24,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
         }
     }
 
-    function shapeMouseDown(){
+    function shapeMouseDown() {
         // setCurIndx()
     }
 
@@ -56,74 +56,57 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                 if (index !== undefined) {
                     console.log('inside index')
                     let elm = document.getElementById(elmId);
-                    if (prv[index].type === SHAPES.CIRCLE) {
-                        prv[index].props.cx = ox;
-                        elm.setAttribute('cx', ox);
-                        prv[index].props.cy = oy;
-                        elm.setAttribute('cy', oy);
-                    }
-                    if (prv[index].type === SHAPES.TEXT) {
-                        prv[index].props.x = ox - prv[index].props.value.length * 5;
-                        elm.setAttribute('x', ox - prv[index].props.value.length * 5);
-                        prv[index].props.y = oy + 10;
-                        elm.setAttribute('y', oy + 10);
-                    }
-                    if (prv[index].type === SHAPES.RECTANGLE) {
-                        prv[index].props.x = ox - prv[index].props.width / 2;
-                        elm.setAttribute('x', ox - prv[index].props.width / 2);
-                        prv[index].props.y = oy - prv[index].props.width / 2;
-                        elm.setAttribute('y', oy - prv[index].props.width / 2);
-                    }
-                    if (prv[index].type === SHAPES.PENCIL || prv[index].type === SHAPES.TRIANGLE || prv[index].type === SHAPES.DIAMOND || prv[index].type === SHAPES.HEXAGON || prv[index].type === SHAPES.LINE) {
-                        let mx = e.movementX;
-                        let my = e.movementY;
-                        let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
-                        let pmy = parseInt(elm.style.transform.split(',')[1]);
-                        // console.log(pmx, pmy, prv[index]);
-                        elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
-                        prv[index].style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
-                    }
-                }
-                // prv.forEach((shp, i) => {
-                //     if(shp.id === elmId){
-                //         let elm = document.getElementById(elmId);
-                //         if(shp.type === SHAPES.CIRCLE){
-                //             prv[i].props.cx = ox;
-                //             elm.setAttribute('cx', ox); 
-                //             prv[i].props.cy = oy;
-                //             elm.setAttribute('cy', oy); 
-                //         }
-                //         if(shp.type === SHAPES.TEXT){
-                //             prv[i].props.x = ox - 20;
-                //             elm.setAttribute('x', ox - 20); 
-                //             prv[i].props.y = oy + 10;
-                //             elm.setAttribute('y', oy + 10); 
-                //         }
-                //         if(shp.type === SHAPES.RECTANGLE){
-                //             prv[i].props.x = ox - prv[i].props.width / 2;
-                //             elm.setAttribute('x', ox - prv[i].props.width / 2); 
-                //             prv[i].props.y = oy - prv[i].props.width / 2;
-                //             elm.setAttribute('y', oy - prv[i].props.width / 2); 
-                //         }
-                //         if(shp.type === SHAPES.PENCIL){
-                //             let mx = e.movementX;
-                //             let my = e.movementY;
-                //             let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
-                //             let pmy = parseInt(elm.style.transform.split(',')[1]);
-                //             console.log(pmx, pmy, prv[i]);
-                //             elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`; 
-                //             elm.style.stroke = `yellow`; 
-                //             prv[i].style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
 
-                //         }
-                //     }
-                // })
+                    let mx = e.movementX;
+                    let my = e.movementY;
+                    let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
+                    let pmy = parseInt(elm.style.transform.split(',')[1]);
+                    // console.log(pmx, pmy, prv[index]);
+                    elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
+                    prv[index].style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
+                }
                 return prv;
             })
+            // setShapes(prv => {
+            //     let index = prv.findIndex(shp => shp.id === elmId);;
+            //     console.log('index', index)
+            //     if (index !== undefined) {
+            //         console.log('inside index')
+            //         let elm = document.getElementById(elmId);
+            //         if (prv[index].type === SHAPES.CIRCLE) {
+            //             prv[index].props.cx = ox;
+            //             elm.setAttribute('cx', ox);
+            //             prv[index].props.cy = oy;
+            //             elm.setAttribute('cy', oy);
+            //         }
+            //         if (prv[index].type === SHAPES.TEXT) {
+            //             prv[index].props.x = ox - prv[index].props.value.length * 5;
+            //             elm.setAttribute('x', ox - prv[index].props.value.length * 5);
+            //             prv[index].props.y = oy + 10;
+            //             elm.setAttribute('y', oy + 10);
+            //         }
+            //         if (prv[index].type === SHAPES.RECTANGLE) {
+            //             prv[index].props.x = ox - prv[index].props.width / 2;
+            //             elm.setAttribute('x', ox - prv[index].props.width / 2);
+            //             prv[index].props.y = oy - prv[index].props.width / 2;
+            //             elm.setAttribute('y', oy - prv[index].props.width / 2);
+            //         }
+            //         if (prv[index].type === SHAPES.PENCIL || prv[index].type === SHAPES.TRIANGLE || prv[index].type === SHAPES.DIAMOND || prv[index].type === SHAPES.HEXAGON || prv[index].type === SHAPES.LINE) {
+            //             let mx = e.movementX;
+            //             let my = e.movementY;
+            //             let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
+            //             let pmy = parseInt(elm.style.transform.split(',')[1]);
+            //             // console.log(pmx, pmy, prv[index]);
+            //             elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
+            //             prv[index].style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
+            //         }
+            //     }
+            //     return prv;
+            // })
         }
     }
 
-    function shapeMouseUp(){
+    function shapeMouseUp() {
         updateShapesOnDb()
     }
 
@@ -133,122 +116,115 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                 shape => {
                     switch (shape.type) {
                         case SHAPES.PENCIL:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polyline
                                     key={shape.id}
                                     id={shape.id}
                                     style={{ ...shape.style }}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
-                                    onMouseDown={shapeMouseDown}
-                                    onMouseUp={shapeMouseUp}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
+                                    // onMouseDown={shapeMouseDown}
+                                    // onMouseUp={shapeMouseUp}
                                     points={shape.props.points}
                                 />
                             </ShapeCover>
                         case SHAPES.CIRCLE:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <ellipse
                                     id={shape.id}
-                                    style={shape.style}
+                                    style={{ ...shape.style }}
                                     cx={shape.props.cx}
                                     cy={shape.props.cy}
                                     rx={shape.props.rx}
                                     ry={shape.props.ry}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
-                                    onMouseUp={shapeMouseUp}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.RECTANGLE:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <rect
                                     key={shape.id}
                                     id={shape.id}
-                                    style={shape.style}
+                                    style={{ ...shape.style }}
                                     x={shape.props.x}
                                     y={shape.props.y}
                                     width={shape.props.width}
                                     height={shape.props.height}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
-                                    onMouseUp={shapeMouseUp}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.TRIANGLE:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polygon
                                     key={shape.id}
                                     id={shape.id}
-                                    style={{...shape.style}}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
+                                    style={{ ...shape.style }}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
-                                    onMouseUp={shapeMouseUp}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.DIAMOND:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polygon
                                     key={shape.id}
                                     id={shape.id}
-                                    style={shape.style}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
+                                    style={{ ...shape.style }}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
-                                    onMouseUp={shapeMouseUp}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.HEXAGON:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polygon
                                     key={shape.id}
                                     id={shape.id}
-                                    style={shape.style}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
+                                    style={{ ...shape.style }}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
-                                    onMouseUp={shapeMouseUp}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.LINE.ONE_ARROW:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polyline
                                     id={shape.id}
-                                    style={shape.style}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
+                                    style={{ ...shape.style }}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
                                     markerEnd="url(#arrowhead)"
-                                    onMouseUp={shapeMouseUp}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.LINE.TWO_ARROW:
-                            return <ShapeCover key={shape.id} shape={shape}>
+                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polyline
                                     id={shape.id}
-                                    style={shape.style}
-                                    onClick={onShapeClick}
-                                    onMouseMove={shapeMouseMove}
+                                    style={{ ...shape.style }}
+                                    // onClick={onShapeClick}
+                                    // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
                                     markerEnd="url(#arrowhead)"
                                     markerStart="url(#startarrow)"
-                                    onMouseUp={shapeMouseUp}
+                                    // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.TEXT:
-                            return <RenderText key={shape.id} shape={shape}
-                                onClick={onShapeClick} onMouseUp={shapeMouseUp} onMouseMove={shapeMouseMove} />
-                        // <ShapeCover key={shape.id} shape={shape}>
-                        //     <text
-                        //         id={shape.id} 
-                        //         key={shape.id}
-                        //         x={shape.props.x}
-                        //         y={shape.props.y}
-                        //         style={shape.style}
-                        //         onClick={onShapeClick}
-                        //         onMouseMove={shapeMouseMove}
-                        //     >{shape.props.value}</text>
-                        // </ShapeCover>
+                            return <RenderText key={shape.id}
+                                shape={shape}
+                                // onClick={onShapeClick}
+                                // onMouseUp={shapeMouseUp}
+                                // onMouseMove={shapeMouseMove}
+                            />
                     }
                 }
             )}

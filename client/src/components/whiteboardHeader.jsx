@@ -41,7 +41,7 @@ const WhiteboardHeader = () => {
 
     return (
         <div className={styles.header}>
-            <h4>{whiteboard.name}</h4>
+            <h4>{whiteboard?.name}</h4>
             <div className={styles.box2}>
                 {/* <h4 style={{ marginRight: '20px' }}>{user.name}</h4> */}
                 <button style={{padding: '5px 10px', borderRadius: '20px', border: '2px solid blueviolet', cursor: 'pointer'}} onClick={addUser}>Add User</button>

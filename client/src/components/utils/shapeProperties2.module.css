@@ -1,0 +1,11 @@
+.shapeProperitesBox{
+    min-width: 20px;
+    min-height: 20px;
+    border: 2px solid blue;
+    height: 50px;
+    width: 100px;
+    box-shadow: 5px 5px 10px #aaa;
+    position: absolute;
+    top: 200px;
+    left: 100px;
+}
