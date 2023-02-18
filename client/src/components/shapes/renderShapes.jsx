@@ -116,7 +116,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                 shape => {
                     switch (shape.type) {
                         case SHAPES.PENCIL:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polyline
                                     key={shape.id}
                                     id={shape.id}
@@ -129,7 +129,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.CIRCLE:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <ellipse
                                     id={shape.id}
                                     style={{ ...shape.style }}
@@ -143,7 +143,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.RECTANGLE:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <rect
                                     key={shape.id}
                                     id={shape.id}
@@ -158,7 +158,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.TRIANGLE:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polygon
                                     key={shape.id}
                                     id={shape.id}
@@ -170,7 +170,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.DIAMOND:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polygon
                                     key={shape.id}
                                     id={shape.id}
@@ -182,7 +182,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.HEXAGON:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polygon
                                     key={shape.id}
                                     id={shape.id}
@@ -194,7 +194,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.LINE.ONE_ARROW:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polyline
                                     id={shape.id}
                                     style={{ ...shape.style }}
@@ -206,7 +206,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                 />
                             </ShapeCover>
                         case SHAPES.LINE.TWO_ARROW:
-                            return <ShapeCover setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
+                            return <ShapeCover updateShapesOnDb={updateShapesOnDb} setShapes={setShapes} isMousePressed={isMousePressed} setUndoShapes={setUndoShapes} key={shape.id} shape={shape}>
                                 <polyline
                                     id={shape.id}
                                     style={{ ...shape.style }}

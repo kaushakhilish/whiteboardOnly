@@ -22,6 +22,9 @@ const Whiteboard = () => {
         selectedStrokeColor,
         selectedFillColor,
         whiteboard,
+        selectedShapeIds,
+        setSelectedShapeIds,
+        movingShape
     } = useContext(BoardContext);
 
     const { socket } = useContext(SocketContext);
@@ -84,6 +87,8 @@ const Whiteboard = () => {
 
         let props = {
             points: `${ox},${oy} `,
+            translateX: 0,
+            translateY: 0,
         }
         let style = {
             fill: selectedFillColor,
@@ -168,6 +173,8 @@ const Whiteboard = () => {
                 cy: oy,
                 rx: 0,
                 ry: 0,
+                translateX: 0,
+                translateY: 0,
             }
             let shape = createShape(selectedBtn, style, props)
             setShapes(prv => [...prv, shape])
@@ -179,6 +186,8 @@ const Whiteboard = () => {
                 y: oy,
                 width: 0,
                 height: 0,
+                translateX: 0,
+                translateY: 0,
             }
             let shape = createShape(selectedBtn, style, props)
             setShapes(prv => [...prv, shape])
@@ -191,7 +200,9 @@ const Whiteboard = () => {
                 point1: { ox: ox, oy: oy },
                 point2: { ox: ox, oy: oy },
                 point3: { ox: ox, oy: oy },
-                points: `${ox},${oy} ${ox},${oy} ${ox},${oy}`
+                points: `${ox},${oy} ${ox},${oy} ${ox},${oy}`,
+                translateX: 0,
+                translateY: 0,
             }
             let shape = createShape(selectedBtn, style, props)
             setShapes(prv => [...prv, shape])
@@ -205,7 +216,9 @@ const Whiteboard = () => {
                 point2: { ox: ox, oy: oy },
                 point3: { ox: ox, oy: oy },
                 point4: { ox: ox, oy: oy },
-                points: `${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy}`
+                points: `${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy}`,
+                translateX: 0,
+                translateY: 0,
             }
             let shape = createShape(selectedBtn, style, props)
             setShapes(prv => [...prv, shape])
@@ -221,7 +234,9 @@ const Whiteboard = () => {
                 point4: { ox: ox, oy: oy },
                 point5: { ox: ox, oy: oy },
                 point6: { ox: ox, oy: oy },
-                points: `${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy}`
+                points: `${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy} ${ox},${oy}`,
+                translateX: 0,
+                translateY: 0,
             }
             let shape = createShape(selectedBtn, style, props)
             setShapes(prv => [...prv, shape])
@@ -251,6 +266,7 @@ const Whiteboard = () => {
         if (selectedBtn !== BUTTONS.SELECT.SELECT && selectedBtn !== BUTTONS.SELECT.MOVE && selectedBtn !== BUTTONS.ERASOR) {
             updateShapesOnDb();
         }
+
     }
     function keepDrawing(e) {
         let ox = e.nativeEvent.offsetX;
@@ -380,6 +396,12 @@ const Whiteboard = () => {
         }
     }
 
+    function boardClickHandler(e){
+        if(selectedBtn === BUTTONS.SELECT.SELECT){
+            setSelectedShapeIds([])
+        }
+    }
+
     function undoMove() {
         console.log('undo move')
         // if (shapes.length) {
@@ -498,6 +520,7 @@ const Whiteboard = () => {
                     viewBox="0 0 1920 1080"
                     width={1920}
                     height={1080}
+                    onClick={boardClickHandler}
                     onMouseDown={startDrawing}
                     onMouseUp={endDrawing}
                     onMouseMove={keepDrawing}
@@ -506,7 +529,7 @@ const Whiteboard = () => {
                     {(isMousePressed && selectionRectStyle) && <SelectionRect selectionRectStyle={selectionRectStyle} />}
                     {shapes && <RenderShapes updateShapesOnDb={updateShapesOnDb} setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
                 </svg>
-                <ShapeProperties2 />
+                {(selectedShapeIds?.length && !movingShape) && <ShapeProperties2 setShapes={setShapes} shapes={shapes} />}
             </div>
         </div>
 
