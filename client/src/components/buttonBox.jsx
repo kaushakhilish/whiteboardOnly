@@ -12,17 +12,20 @@ import LinesButtonBox from './linesButtonBox';
 import ActionButton from './utils/actionButton';
 import MoveNGrabButtonBox from './MoveNGrabButtonBox';
 import PencilBox from './pencilBox';
-import { BoardContext, BUTTONS } from '../context/boardContext';
+import { BoardContext, BUTTONS, SHAPES } from '../context/boardContext';
 import erasorImg from '../assets/erasor.svg';
+import { URL } from '../context/appContext';
 
-const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb, setEditInputPos }) => {
+const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb, setEditInputPos, setShapes }) => {
     const {
         selectedBtn,
         setSelectedBtn,
         selectedStrokeSize,
         setSelectedStrokeSize,
         selectedStrokeColor,
-        setSelectedStrokeColor
+        setSelectedStrokeColor,
+        selectedImage,
+        setSelectedImage
     } = useContext(BoardContext);
 
     const [openShapes, setOpenShapes] = useState(false);
@@ -36,7 +39,7 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
 
     useEffect(() => {
         if (selectedBtn === BUTTONS.ERASOR) {
-            board.current.style.cursor = `url(${erasorImg}), auto`;
+            board.current.style.cursor = `URL(${erasorImg}), auto`;
         } else if (selectedBtn === BUTTONS.SELECT.MOVE) {
             board.current.style.cursor = `grab`;
         }
@@ -84,7 +87,7 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
         setSelectedBtn(BUTTONS.TEXT)
     }
     function notesClickHandler() {
-        setSelectedBtn(BUTTONS.NOTES)
+        setSelectedBtn(BUTTONS.STICKY_NOTE)
     }
     function uploadClickHandler() {
         setSelectedBtn(BUTTONS.UPLOAD)
@@ -124,6 +127,59 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
 
     function undoRedoMouseUp() {
         // updateShapesOnDb();
+    }
+
+    function onChooseImage(e) {
+        console.log('image choose', e.target.files[0])
+
+        let input = e.target;
+        let reader;
+
+        if (input.files && input.files[0]) {
+            reader = new FileReader();
+
+            reader.onload = function (e1) {
+                setSelectedImage(e1.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+
+
+        if (input.files[0]) {
+            let formData = new FormData();
+            formData.append('fileName', input.files[0]);
+            fetch(URL + 'whiteboard/uploadFile', {
+                method: 'POST',
+                body: formData
+            }).then(res => {
+                return res.json()
+            }).then(data => {
+                console.log(data);
+                //Pushing image shape in shapes array
+                let shape = {
+                    id: Math.random() + '',
+                    type: SHAPES.IMAGE,
+                    props: {
+                        x: 200,
+                        y: 200,
+                        width: 300,
+                        height: 300,
+                        filename: data?.fileName,
+                        translateX: 0,
+                        translateY: 0,
+                    },
+                    style: {
+                        transform: 'translate(0px,0px)'
+                    }
+                }
+                setShapes(prv => [...prv, shape]);
+            }).catch(err => {
+                console.error('Error upload image', err)
+            })
+        }
+
+
     }
     return (
         <div ref={buttonBox} className={styles.buttonBox}>
@@ -186,7 +242,7 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
             <div>
                 <ActionButton
                     onClick={notesClickHandler}
-                    buttonName={BUTTONS.NOTES}
+                    buttonName={BUTTONS.STICKY_NOTE}
                     selectedBtn={selectedBtn}
                 >
                     <CgNotes />
@@ -199,7 +255,10 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
                     buttonName={BUTTONS.UPLOAD}
                     selectedBtn={selectedBtn}
                 >
-                    <HiOutlineUpload />
+                    <label>
+                        <HiOutlineUpload />
+                        <input onChange={onChooseImage} type='file' style={{ display: 'none' }} />
+                    </label>
                 </ActionButton>
             </div>
 

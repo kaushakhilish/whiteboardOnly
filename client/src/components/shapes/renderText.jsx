@@ -11,20 +11,17 @@ const RenderText = ({ shape, onClick, onMouseMove, onMouseUp }) => {
         return () => { };
     }, []);
     return (
-        <ShapeCover shape={shape}>
+        <>
             <text
                 id={shape.id}
                 key={shape.id}
                 x={shape.props.x}
                 y={shape.props.y}
                 style={shape.style}
-                onClick={onClick}
-                onMouseMove={onMouseMove}
-                onMouseUp={onMouseUp}
             >
-                {text?.map((txt, i) => <tspan key={txt+shape.id} id={shape.id} dy={i * 20}>{txt}<br /></tspan>)}
+                {text?.map((txt, i) => <tspan key={txt + shape.id} id={shape.id} dy={i * 20}>{txt}<br /></tspan>)}
             </text>
-        </ShapeCover>
+        </>
     );
 }
 

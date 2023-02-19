@@ -102,7 +102,7 @@ const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes,
             setShapes(prv => {
                 let index = prv.findIndex(shp => shp.id === elmId);;
                 console.log('index', index)
-                if (index !== undefined) {
+                if (index !== undefined && prv) {
                     console.log('inside index')
                     // let elm = document.getElementById(elmId);
                     let elm = gRef.current;
@@ -111,7 +111,6 @@ const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes,
                     let my = e.movementY;
                     let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
                     let pmy = parseInt(elm.style.transform.split(',')[1]);
-                    // console.log(pmx, pmy, prv[index]);
                     elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
                     prv[index].props.translateX = pmx + mx;
                     prv[index].props.translateY = pmy + my;
@@ -148,7 +147,7 @@ const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes,
                 onClick={shapeClickHandler}
                 onMouseMove={shapeMouseMove}
                 // style={{ ...shapeGStyle }}
-                style={{transform: `translate(${shape.props.translateX}px,${shape?.props?.translateY}px)`}}
+                style={{ transform: `translate(${shape?.props?.translateX}px,${shape?.props?.translateY}px)` }}
             >
                 {
                     (selected && !movingShape) && <rect x={rectProps.x} y={rectProps.y}

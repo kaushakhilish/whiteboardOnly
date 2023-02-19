@@ -2,7 +2,40 @@ const express = require('express');
 const Boards = require('../models/Boards');
 const Users = require('../models/users');
 
+let imageName;
+const multer = require('multer')
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: 'images/',
+        filename: (req, file, cb) => {
+            const uniquePrifix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+            imageName = uniquePrifix + '.' + file.mimetype.split('/')[1];
+            return cb(null, imageName)
+        },
+    })
+})
+
 const router = express.Router();
+
+router.post('/uploadFile', upload.single('fileName'), async function (req, res, next) {
+    // req.file is the `avatar` file
+    // req.body will hold the text fields, if there were any
+
+    // try {
+    //     const updatedBoard = await Boards.updateOne(
+    //         { _id: boardId },
+    //         { $set: { shapes: board.shapes } }
+    //     );
+
+
+    //     res.json(updatedBoard)
+    // } catch (err) {
+    //     res.json({ message: err })
+    // }
+
+    res.json({fileName: imageName});
+
+})
 
 router.get('/messages/:boardId', async (req, res) => {
     let id = req.params.boardId;
@@ -26,7 +59,7 @@ router.post('/messages', async (req, res) => {
     let boardId = req.body.boardId;
     let message = req.body.message;
     message.time = new Date();
-    
+
     if (boardId && message) {
         try {
             const updatedBoard = await Boards.updateOne(
@@ -57,7 +90,7 @@ router.patch('/addUser', async (req, res) => {
 
             if (user) {
                 //Converting object id to string id
-                let modUser = {...user}._doc;
+                let modUser = { ...user }._doc;
                 modUser._id = user._id.toString();
 
                 // console.log('string1', modUser)
@@ -69,7 +102,7 @@ router.patch('/addUser', async (req, res) => {
 
                 res.status(200).json(updatedBoard)
 
-            }else{
+            } else {
                 res.status(404).json({ message: 'User Not found' })
             }
         } catch (err) {

@@ -15,15 +15,18 @@ app.use(cors({
     'Access-Control-Allow-Origin': '*'
 }))
 
+
+
+
 app.use(express.json());
 app.use(express.static('client/dist'));
+app.use('/images', express.static('images'))
 
 const userRoute = require('./routes/users');
 const whiteboardRoute = require('./routes/whiteboard');
 
 app.use('/users', userRoute);
 app.use('/whiteboard', whiteboardRoute);
-
 
 let BoardUsers = [];
 io.on('connection', (socket) => {

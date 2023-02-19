@@ -4,8 +4,6 @@ import { SocketContext } from './socketProvider';
 export const BoardContext = createContext({});
 import { URL } from './appContext';
 
-// export const URL = 'http://localhost:4000';
-
 //Shapes constants
 export const SHAPES = {
     PENCIL: 'pencil',
@@ -20,6 +18,8 @@ export const SHAPES = {
         TWO_ARROW: 'two_arrow',
     },
     TEXT: 'text',
+    STICKY_NOTE: 'sticky_note',
+    IMAGE: 'image'
 }
 
 //Button Constants
@@ -41,7 +41,7 @@ export const BUTTONS = {
     },
     LINE: SHAPES.LINE,
     TEXT: SHAPES.TEXT,
-    NOTES: 'notes',
+    STICKY_NOTE: SHAPES.STICKY_NOTE,
     UPLOAD: 'upload',
     ERASOR: 'erasor',
     COLORS: 'colors',
@@ -64,6 +64,7 @@ const BoardContextProvider = ({ children }) => {
     const [selectedShapeIds, setSelectedShapeIds] = useState([]);
     const [movingShape, setMovingShape] = useState(false);
     const [shapePropCompVals, setShapePropCompVals] = useState({});
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const { socket, setSocket } = useContext(SocketContext);
 
@@ -77,12 +78,12 @@ const BoardContextProvider = ({ children }) => {
             console.log('id', roomId)
             if (roomId && id) {
                 let newSocket = io(URL, {
-                        query: { roomId, id },
-                        transports: ['websocket'],
-                    }
+                    query: { roomId, id },
+                    transports: ['websocket'],
+                }
                 );
                 console.log('socket', newSocket)
-                if(newSocket){
+                if (newSocket) {
                     console.log('socket', newSocket);
                     setSocket(newSocket)
                     return () => { newSocket.close() };
@@ -105,12 +106,14 @@ const BoardContextProvider = ({ children }) => {
             setWhiteboard,
             allWhiteboards,
             setAllWhiteboards,
-            selectedShapeIds, 
+            selectedShapeIds,
             setSelectedShapeIds,
-            movingShape, 
+            movingShape,
             setMovingShape,
-            shapePropCompVals, 
-            setShapePropCompVals
+            shapePropCompVals,
+            setShapePropCompVals,
+            selectedImage,
+            setSelectedImage
         }}>
             {children}
         </BoardContext.Provider>

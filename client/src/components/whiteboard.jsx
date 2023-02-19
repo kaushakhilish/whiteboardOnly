@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import ButtonBox from './buttonBox';
 import SelectionRect from './utils/selectionRect';
 import styles from './whiteboard.module.css';
-import { BoardContext, BUTTONS, STROKE_SIZES } from '../context/boardContext';
+import { BoardContext, BUTTONS, SHAPES, STROKE_SIZES } from '../context/boardContext';
 import RenderShapes from './shapes/renderShapes';
 import SvgDefs from './svgDefs';
 import EditInput from './editInput';
@@ -12,6 +12,7 @@ import WhiteboardHeader from './whiteboardHeader';
 import MsgContextProvider from '../context/msgContext';
 import ShapeProperties from './utils/ShapeProperties';
 import ShapeProperties2 from './utils/ShapeProperties2';
+import StickyNoteShadow from './shapes/stickyNoteShadow';
 
 const Whiteboard = () => {
 
@@ -24,7 +25,8 @@ const Whiteboard = () => {
         whiteboard,
         selectedShapeIds,
         setSelectedShapeIds,
-        movingShape
+        movingShape,
+        selectedImage
     } = useContext(BoardContext);
 
     const { socket } = useContext(SocketContext);
@@ -33,9 +35,10 @@ const Whiteboard = () => {
     const [shapes, setShapes] = useState([]);
     const [undoShapes, setUndoShapes] = useState([]);
     const [curInd, setCurInd] = useState(0); //current Index
-    const [selectionRectStyle, setSelectionRectStyle] = useState(null)
+    const [selectionRectStyle, setSelectionRectStyle] = useState(null);
     const [editInputValue, setEditInputValue] = useState('');
     const [editInputPos, setEditInputPos] = useState(null);
+    const [stickyShadowProps, setStickyShadowProps] = useState({});
     const board = useRef(null);
 
     useEffect(() => {
@@ -250,14 +253,14 @@ const Whiteboard = () => {
             setCurInd(shapes.length);
         }
         if (selectedBtn === BUTTONS.TEXT) {
-            if(!editInputPos){
+            if (!editInputPos) {
                 setEditInputPos({ x: ox, y: oy });
                 setIsMousePressed(false)
                 // setSelectedBtn(BUTTONS.SELECT.SELECT)
             }
-        }else{
+        } else {
             setEditInputPos(null);
-        } 
+        }
     }
     function endDrawing() {
         console.log('End')
@@ -271,6 +274,15 @@ const Whiteboard = () => {
     function keepDrawing(e) {
         let ox = e.nativeEvent.offsetX;
         let oy = e.nativeEvent.offsetY;
+
+        if (selectedBtn === SHAPES.STICKY_NOTE) {
+            setStickyShadowProps({
+                x: ox - 100 / 2,
+                y: oy - 100 / 2,
+                w: 100,
+                h: 100,
+            })
+        }
 
         if (isMousePressed) {
             if (selectedBtn === BUTTONS.SELECT.SELECT) {
@@ -387,7 +399,7 @@ const Whiteboard = () => {
                 })
             }
 
-            if(selectedBtn === BUTTONS.SELECT.MOVE){
+            if (selectedBtn === BUTTONS.SELECT.MOVE) {
                 // console.log(e)
                 let container = document.getElementById('whiteboardContainer');
                 container.scrollBy((e.movementX * -1), (e.movementY * -1))
@@ -396,10 +408,39 @@ const Whiteboard = () => {
         }
     }
 
-    function boardClickHandler(e){
-        if(selectedBtn === BUTTONS.SELECT.SELECT){
-            setSelectedShapeIds([])
+    function boardClickHandler(e) {
+        if (selectedBtn === BUTTONS.SELECT.SELECT) {
+            setSelectedShapeIds([]);
         }
+        if (selectedBtn === BUTTONS.STICKY_NOTE) {
+            let ox = e.nativeEvent.offsetX;
+            let oy = e.nativeEvent.offsetY;
+            console.log(ox, oy)
+            let strokeWidth;
+            //Setting styles
+            if (selectedStrokeSize === STROKE_SIZES.STROKE_THIN) { strokeWidth = '1' }
+            if (selectedStrokeSize === STROKE_SIZES.STROKE_MID) { strokeWidth = '3' }
+            if (selectedStrokeSize === STROKE_SIZES.STROKE_THICK) { strokeWidth = '5' }
+            
+            let style = {
+                stroke: 'white',
+                strokeWidth: 1,
+                transform: 'translate(0px, 0px)',
+            }
+            
+            let props = {
+                x: ox - 100/2,
+                y: oy - 100/2,
+                w: 100,
+                h: 100,
+                text: 'Hello',
+                translateX: 0,
+                translateY: 0,
+            }
+            let shape = createShape(BUTTONS.STICKY_NOTE, style, props);
+            setShapes(prv => [...prv, shape])
+        }
+        setSelectedBtn(BUTTONS.SELECT.SELECT);
     }
 
     function undoMove() {
@@ -424,7 +465,7 @@ const Whiteboard = () => {
                 return true
             }
         });
-        if (newUnShapes, unShape) {
+        if (newUnShapes && unShape) {
             setShapes(prv1 => [...prv1, unShape]);
             setUndoShapes(newUnShapes)
         }
@@ -451,7 +492,9 @@ const Whiteboard = () => {
             let props = {
                 value: editInputValue,
                 x: editInputPos.x,
-                y: editInputPos.y + 10
+                y: editInputPos.y + 10,
+                translateX: 0,
+                translateY: 0,
             }
             let textShape = createShape(BUTTONS.TEXT, style, props);
             setShapes(prv => [...prv, textShape]);
@@ -507,10 +550,11 @@ const Whiteboard = () => {
             </MsgContextProvider>
             <div id='whiteboardContainer' className={styles.whiteboard}>
                 <ButtonBox
+                    board={board}
+                    setShapes={setShapes}
                     undoMove={undoMove}
                     redoMove={redoMove}
                     setEditInputPos={setEditInputPos}
-                    board={board}
                     updateShapesOnDb={updateShapesOnDb}
                     isMousePressed={isMousePressed}
                 />
@@ -528,6 +572,8 @@ const Whiteboard = () => {
                     <SvgDefs />
                     {(isMousePressed && selectionRectStyle) && <SelectionRect selectionRectStyle={selectionRectStyle} />}
                     {shapes && <RenderShapes updateShapesOnDb={updateShapesOnDb} setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
+                    {(selectedBtn === BUTTONS.STICKY_NOTE && stickyShadowProps) && <StickyNoteShadow stickyShadowProps={stickyShadowProps} />}
+
                 </svg>
                 {(selectedShapeIds?.length && !movingShape) && <ShapeProperties2 setShapes={setShapes} shapes={shapes} />}
             </div>

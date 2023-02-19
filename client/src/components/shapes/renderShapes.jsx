@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
+import RenderImage from './renderImage';
+import RenderStickyNote from './renderStickyNote';
 import RenderText from './renderText';
 import ShapeCover from './shapeCover';
 
@@ -137,9 +139,9 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     cy={shape.props.cy}
                                     rx={shape.props.rx}
                                     ry={shape.props.ry}
-                                    // onClick={onShapeClick}
-                                    // onMouseMove={shapeMouseMove}
-                                    // onMouseUp={shapeMouseUp}
+                                // onClick={onShapeClick}
+                                // onMouseMove={shapeMouseMove}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.RECTANGLE:
@@ -152,9 +154,9 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     y={shape.props.y}
                                     width={shape.props.width}
                                     height={shape.props.height}
-                                    // onClick={onShapeClick}
-                                    // onMouseMove={shapeMouseMove}
-                                    // onMouseUp={shapeMouseUp}
+                                // onClick={onShapeClick}
+                                // onMouseMove={shapeMouseMove}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.TRIANGLE:
@@ -166,7 +168,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     // onClick={onShapeClick}
                                     // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
-                                    // onMouseUp={shapeMouseUp}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.DIAMOND:
@@ -178,7 +180,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     // onClick={onShapeClick}
                                     // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
-                                    // onMouseUp={shapeMouseUp}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.HEXAGON:
@@ -190,7 +192,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     // onClick={onShapeClick}
                                     // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
-                                    // onMouseUp={shapeMouseUp}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.LINE.ONE_ARROW:
@@ -202,7 +204,7 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     // onMouseMove={shapeMouseMove}
                                     points={shape.props.points}
                                     markerEnd="url(#arrowhead)"
-                                    // onMouseUp={shapeMouseUp}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.LINE.TWO_ARROW:
@@ -215,16 +217,36 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                                     points={shape.props.points}
                                     markerEnd="url(#arrowhead)"
                                     markerStart="url(#startarrow)"
-                                    // onMouseUp={shapeMouseUp}
+                                // onMouseUp={shapeMouseUp}
                                 />
                             </ShapeCover>
                         case SHAPES.TEXT:
-                            return <RenderText key={shape.id}
+                            return <ShapeCover key={shape.id} updateShapesOnDb={updateShapesOnDb}
                                 shape={shape}
-                                // onClick={onShapeClick}
-                                // onMouseUp={shapeMouseUp}
-                                // onMouseMove={shapeMouseMove}
-                            />
+                                setShapes={setShapes}
+                                setUndoShapes={setUndoShapes}
+                                isMousePressed={isMousePressed}
+                            >
+                                <RenderText key={shape.id} shape={shape} />
+                            </ShapeCover>
+                        case SHAPES.STICKY_NOTE:
+                            return <ShapeCover key={shape.id} updateShapesOnDb={updateShapesOnDb}
+                                shape={shape}
+                                setShapes={setShapes}
+                                setUndoShapes={setUndoShapes}
+                                isMousePressed={isMousePressed}
+                            >
+                                <RenderStickyNote key={shape.id} shape={shape} />
+                            </ShapeCover>
+                        case SHAPES.IMAGE:
+                            return <ShapeCover key={shape.id} updateShapesOnDb={updateShapesOnDb}
+                                shape={shape}
+                                setShapes={setShapes}
+                                setUndoShapes={setUndoShapes}
+                                isMousePressed={isMousePressed}
+                            >
+                                <RenderImage key={shape.id} shape={shape} />
+                            </ShapeCover>
                     }
                 }
             )}
