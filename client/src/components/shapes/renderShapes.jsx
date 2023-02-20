@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
 import RenderImage from './renderImage';
+import RenderPdf from './renderPdf';
 import RenderStickyNote from './renderStickyNote';
 import RenderText from './renderText';
 import ShapeCover from './shapeCover';
@@ -247,6 +248,29 @@ const RenderShapes = ({ shapes, setShapes, isMousePressed, setUndoShapes, update
                             >
                                 <RenderImage key={shape.id} shape={shape} />
                             </ShapeCover>
+                        case SHAPES.PDF:
+                            return <RenderPdf key={shape.id}
+                                shape={shape}
+                                updateShapesOnDb={updateShapesOnDb}
+                                setShapes={setShapes}
+                                setUndoShapes={setUndoShapes}
+                                isMousePressed={isMousePressed}
+                            />
+                        // case SHAPES.PDF:
+                        //     return <ShapeCover key={shape.id} updateShapesOnDb={updateShapesOnDb}
+                        //         shape={shape}
+                        //         setShapes={setShapes}
+                        //         setUndoShapes={setUndoShapes}
+                        //         isMousePressed={isMousePressed}
+                        //     >
+                        //         <RenderPdf key={shape.id}
+                        //             shape={shape}
+                        //             updateShapesOnDb={updateShapesOnDb}
+                        //             setShapes={setShapes}
+                        //             setUndoShapes={setUndoShapes}
+                        //             isMousePressed={isMousePressed}
+                        //         />
+                        //     </ShapeCover>
                     }
                 }
             )}

@@ -25,7 +25,7 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
         selectedStrokeColor,
         setSelectedStrokeColor,
         selectedImage,
-        setSelectedImage
+        setSelectedImage,
     } = useContext(BoardContext);
 
     const [openShapes, setOpenShapes] = useState(false);
@@ -156,24 +156,35 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
                 return res.json()
             }).then(data => {
                 console.log(data);
-                //Pushing image shape in shapes array
-                let shape = {
-                    id: Math.random() + '',
-                    type: SHAPES.IMAGE,
-                    props: {
-                        x: 200,
-                        y: 200,
-                        width: 300,
-                        height: 300,
-                        filename: data?.fileName,
-                        translateX: 0,
-                        translateY: 0,
-                    },
-                    style: {
-                        transform: 'translate(0px,0px)'
+
+                console.log('got data', data)
+                if (data.fileName && data.type) {
+                    console.log('added file shape object')
+                    //Pushing image shape in shapes array
+                    let shape = {
+                        id: Math.random() + '',
+                        props: {
+                            x: 200,
+                            y: 200,
+                            width: 350,
+                            height: 350,
+                            translateX: 0,
+                            translateY: 0,
+                            filename: data?.fileName,
+                        },
+                        style: {
+                            transform: 'translate(0px,0px)'
+                        }
                     }
+                    if (data.type === 'image') {
+                        shape.type = SHAPES.IMAGE;
+                    }
+                    if (data.type === 'pdf') {
+                        shape.type = SHAPES.PDF;
+                    }
+                    setShapes(prv => [...prv, shape]);
+                    setSelectedBtn(BUTTONS.SELECT.SELECT)
                 }
-                setShapes(prv => [...prv, shape]);
             }).catch(err => {
                 console.error('Error upload image', err)
             })
@@ -193,6 +204,7 @@ const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb
                 </ActionButton>
                 {openMoveNGrab && <MoveNGrabButtonBox setSelectedBtn={setSelectedBtn} selectedBtn={selectedBtn} />}
             </div>
+
             <div>
                 <ActionButton
                     onClick={drawClickHandler}

@@ -15,12 +15,9 @@ app.use(cors({
     'Access-Control-Allow-Origin': '*'
 }))
 
-
-
-
 app.use(express.json());
 app.use(express.static('client/dist'));
-app.use('/images', express.static('images'))
+app.use('/uploads', express.static('uploads'))
 
 const userRoute = require('./routes/users');
 const whiteboardRoute = require('./routes/whiteboard');

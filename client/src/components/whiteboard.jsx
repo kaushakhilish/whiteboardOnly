@@ -10,9 +10,9 @@ import { URL } from '../context/appContext';
 import { SocketContext } from '../context/socketProvider';
 import WhiteboardHeader from './whiteboardHeader';
 import MsgContextProvider from '../context/msgContext';
-import ShapeProperties from './utils/ShapeProperties';
-import ShapeProperties2 from './utils/ShapeProperties2';
+// import ShapeProperties from './utils/ShapeProperties';
 import StickyNoteShadow from './shapes/stickyNoteShadow';
+// import RenderPdf from './shapes/renderPdf';
 
 const Whiteboard = () => {
 
@@ -569,13 +569,14 @@ const Whiteboard = () => {
                     onMouseUp={endDrawing}
                     onMouseMove={keepDrawing}
                 >
+                    {/* <RenderPdf /> */}
                     <SvgDefs />
                     {(isMousePressed && selectionRectStyle) && <SelectionRect selectionRectStyle={selectionRectStyle} />}
                     {shapes && <RenderShapes updateShapesOnDb={updateShapesOnDb} setUndoShapes={setUndoShapes} isMousePressed={isMousePressed} setShapes={setShapes} shapes={shapes} />}
                     {(selectedBtn === BUTTONS.STICKY_NOTE && stickyShadowProps) && <StickyNoteShadow stickyShadowProps={stickyShadowProps} />}
 
                 </svg>
-                {(selectedShapeIds?.length && !movingShape) && <ShapeProperties2 setShapes={setShapes} shapes={shapes} />}
+                {/* {(selectedShapeIds?.length && !movingShape) && <ShapeProperties2 setShapes={setShapes} shapes={shapes} />} */}
             </div>
         </div>
 

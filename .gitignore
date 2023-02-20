@@ -3,7 +3,8 @@
 node_modules
 *.local
 .env
-
+images/*
+uploads/*
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

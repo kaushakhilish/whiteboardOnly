@@ -56,7 +56,7 @@ const Home = ({ setPage }) => {
     return (
         <div className={styles.home}>
             <h1 style={{marginBottom: '50px', color: 'white'}}>Welcome {user?.name}</h1>
-            <button onClick={createNewBoard} className={styles.creaWhiteboardBtn}>Create New Whiteboard!</button>
+            {user.role === 'admin' && <button onClick={createNewBoard} className={styles.creaWhiteboardBtn}>Create New Whiteboard!</button>}
             {
                 allWhiteboards &&
                 allWhiteboards.map(brd => {

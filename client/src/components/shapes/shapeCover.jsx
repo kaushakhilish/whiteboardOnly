@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
-import ShapeProperties from '../utils/ShapeProperties';
+import ShapeProperties2 from '../utils/ShapeProperties2';
+import ShapeProperties from './shapeProperties';
 
-const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes, updateShapesOnDb }) => {
+const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes, updateShapesOnDb, pdfOptionsObj }) => {
     const [rectProps, setRectProps] = useState({})
     const [selected, setSelected] = useState(false);
     const [shapeGStyle, setShapeGStyle] = useState({});
@@ -98,25 +99,27 @@ const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes,
             let elmId = e.target.id;
             let ox = e.nativeEvent.offsetX;
             let oy = e.nativeEvent.offsetY;
+            if (elmId) {
 
-            setShapes(prv => {
-                let index = prv.findIndex(shp => shp.id === elmId);;
-                console.log('index', index)
-                if (index !== undefined && prv) {
-                    console.log('inside index')
-                    // let elm = document.getElementById(elmId);
-                    let elm = gRef.current;
+                setShapes(prv => {
+                    let index = prv.findIndex(shp => shp.id === elmId);;
+                    console.log('index', index)
+                    if (index !== undefined && prv) {
+                        console.log('inside index')
+                        // let elm = document.getElementById(elmId);
+                        let elm = gRef.current;
 
-                    let mx = e.movementX;
-                    let my = e.movementY;
-                    let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
-                    let pmy = parseInt(elm.style.transform.split(',')[1]);
-                    elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
-                    prv[index].props.translateX = pmx + mx;
-                    prv[index].props.translateY = pmy + my;
-                }
-                return prv;
-            })
+                        let mx = e.movementX;
+                        let my = e.movementY;
+                        let pmx = parseInt(elm.style.transform.split(',')[0].split('(')[1]);
+                        let pmy = parseInt(elm.style.transform.split(',')[1]);
+                        elm.style.transform = `translate(${pmx + mx}px, ${pmy + my}px)`;
+                        prv[index].props.translateX = pmx + mx;
+                        prv[index].props.translateY = pmy + my;
+                    }
+                    return prv;
+                })
+            }
 
         }
     }
@@ -140,7 +143,7 @@ const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes,
 
     return (
         <>
-            {<g ref={gRef}
+            <g ref={gRef}
                 onMouseUp={onMouseUp}
                 onMouseOver={onMouseOver}
                 onMouseOut={onMouseOut}
@@ -157,7 +160,8 @@ const ShapeCover = ({ children, shape, setUndoShapes, isMousePressed, setShapes,
                 }
                 {children}
                 {/* {(selected && !movingShape) && <ShapeProperties rectProps={rectProps} />} */}
-            </g>}
+            </g>
+            {(selected && !movingShape) && <ShapeProperties pdfOptionsObj={pdfOptionsObj} setShapes={setShapes} shape={shape} rectProps={rectProps}/>}
         </>
     );
 }

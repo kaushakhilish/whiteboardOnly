@@ -19,7 +19,8 @@ export const SHAPES = {
     },
     TEXT: 'text',
     STICKY_NOTE: 'sticky_note',
-    IMAGE: 'image'
+    IMAGE: 'image',
+    PDF: 'PDF'
 }
 
 //Button Constants

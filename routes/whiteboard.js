@@ -18,22 +18,17 @@ const upload = multer({
 const router = express.Router();
 
 router.post('/uploadFile', upload.single('fileName'), async function (req, res, next) {
-    // req.file is the `avatar` file
+    // req.file is the `fileName` file
     // req.body will hold the text fields, if there were any
+    console.log(req.file.mimetype)
+    let type = req.file.mimetype;
 
-    // try {
-    //     const updatedBoard = await Boards.updateOne(
-    //         { _id: boardId },
-    //         { $set: { shapes: board.shapes } }
-    //     );
-
-
-    //     res.json(updatedBoard)
-    // } catch (err) {
-    //     res.json({ message: err })
-    // }
-
-    res.json({fileName: imageName});
+    if(type === 'application/pdf'){
+        res.json({fileName: imageName, type: 'pdf'});
+    }
+    if(type === 'image/jpeg'){
+        res.json({fileName: imageName, type: 'image'});
+    }
 
 })
 
