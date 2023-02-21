@@ -2,9 +2,9 @@ import React from 'react';
 import { BsArrowUpRight } from 'react-icons/bs'
 import { TfiArrowsCorner } from 'react-icons/tfi'
 import { HiOutlineMinus } from 'react-icons/hi'
-import { BUTTONS } from '../context/boardContext';
-import ButtonBoxLayout from './utils/buttonBoxLayout';
-import ActionButton from './utils/actionButton';
+import { BUTTONS } from '../../context/boardContext';
+import ButtonBoxLayout from '../utils/buttonBoxLayout';
+import ActionButton from '../utils/actionButton';
 
 
 const LinesButtonBox = ({ selectedBtn, setSelectedBtn }) => {

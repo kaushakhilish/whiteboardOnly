@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { BoardContext } from '../context/boardContext';
-import { AppContext, URL } from '../context/appContext';
+import { BoardContext } from '../../context/boardContext';
+import { AppContext, URL } from '../../context/appContext';
 import BoardCard from './boardCard';
 import styles from './home.module.css';
 

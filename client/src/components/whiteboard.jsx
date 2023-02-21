@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import ButtonBox from './buttonBox';
 import SelectionRect from './utils/selectionRect';
 import styles from './whiteboard.module.css';
 import { BoardContext, BUTTONS, SHAPES, STROKE_SIZES } from '../context/boardContext';
 import RenderShapes from './shapes/renderShapes';
-import SvgDefs from './svgDefs';
-import EditInput from './editInput';
+import SvgDefs from './shapes/svgDefs';
+import EditInput from './utils/editInput';
 import { URL } from '../context/appContext';
 import { SocketContext } from '../context/socketProvider';
 import WhiteboardHeader from './whiteboardHeader';
 import MsgContextProvider from '../context/msgContext';
 // import ShapeProperties from './utils/ShapeProperties';
 import StickyNoteShadow from './shapes/stickyNoteShadow';
+import ButtonBox from './buttonBox/buttonBox';
 // import RenderPdf from './shapes/renderPdf';
 
 const Whiteboard = () => {
@@ -26,7 +26,8 @@ const Whiteboard = () => {
         selectedShapeIds,
         setSelectedShapeIds,
         movingShape,
-        selectedImage
+        selectedImage,
+        setBoardUsers
     } = useContext(BoardContext);
 
     const { socket } = useContext(SocketContext);
@@ -523,16 +524,20 @@ const Whiteboard = () => {
             // alert('Board Updated')
             fetchBoardData(whiteboard._id);
         })
-        socket?.on('New_User', ({ BoardUsers }) => {
-            console.log('New User', BoardUsers)
+        socket?.on('New_User', (room) => {
+            console.log('New User', room)
+            if(room){
+                setBoardUsers(room.users)
+            }
             // setUsers(BoardUsers);
         })
-        socket?.on('User_Disconnect', ({ BoardUsers }) => {
-            console.log('Disconnected', BoardUsers)
+        socket?.on('User_Disconnect', (room) => {
+            console.log('Someone Disconnected', room)
+            setBoardUsers(room.users)
             // setUsers(BoardUsers);
         })
-        socket?.on('disconnect', () => {
-            console.log('Dissconnected')
+        socket?.on('disconnect', (room) => {
+            console.log('Dissconnected', room)
         })
 
         return () => {

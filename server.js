@@ -25,32 +25,69 @@ const whiteboardRoute = require('./routes/whiteboard');
 app.use('/users', userRoute);
 app.use('/whiteboard', whiteboardRoute);
 
-let BoardUsers = [];
+
+
+//Board Socket rooms
+// let BoardUsers = [];
+let Rooms = [];
 io.on('connection', (socket) => {
     console.log('Socket id', socket.id);
-    socket.join(socket.handshake.query.roomId);
-    BoardUsers.push(socket.id);
-    console.log(BoardUsers);
+    console.log('Handshake querry', socket.handshake.query);
+    console.log('Handshake user', socket.handshake.query.user);
 
-    socket.emit('New_User', { BoardUsers })
+    let roomIndex;
+    let roomId = socket.handshake.query.roomId
+    let boardUser = JSON.parse(socket.handshake.query.user);
+    socket.join(socket.handshake.query.roomId);
+    
+    Rooms.forEach((room, index) => {
+        if(room.id === roomId){
+            roomIndex = index
+        }
+    })
+
+    if(roomIndex === undefined){
+        Rooms.push({
+            id: roomId,
+            users: [boardUser]
+        })
+        roomIndex = 0;
+    }else{
+        Rooms[roomIndex].users.push(boardUser)
+    }
+
+    console.log('Rooms', Rooms);
+
+    socket.emit('New_User', Rooms[roomIndex])
+    socket.to(roomId).emit('New_User', Rooms[roomIndex])
+
+    socket.on('get_users', ({roomId, userId}) => {
+
+    })
 
     socket.on('board_updated', ({ roomId, userId }) => {
-        console.log('boardUpdate', BoardUsers)
-        socket.broadcast.to(roomId).emit('board_updated', { userId, BoardUsers })
+        console.log('boardUpdate', boardUser)
+        socket.broadcast.to(roomId).emit('board_updated', { boardUser })
     })
     socket.on('new_message', ({ roomId }) => {
         console.log('new_message')
         socket.broadcast.to(roomId).emit('new_message', { roomId })
     })
 
-    socket.on('disconnect', () => {
-        BoardUsers = BoardUsers.filter((BoardUser) => {
-            console.log(BoardUser, socket.id)
-            return BoardUser !== socket.id;
-        });
-        socket.broadcast.emit('User_Disconnect', { BoardUsers })
+    socket.on('disconnect', (e) => {
+        // BoardUsers = BoardUsers.filter((BoardUser) => {
+        //     console.log(BoardUser, socket.id)
+        //     return BoardUser !== socket.id;
+        // });
+        console.log('disconnected', boardUser)
+        if(Rooms[roomIndex].users){
+            Rooms[roomIndex].users = Rooms[roomIndex].users.filter((user) => {
+                return boardUser.id !== user.id;
+            })
+        }
+        socket.broadcast.emit('User_Disconnect', Rooms[roomIndex])
 
-        console.log('disconnected', BoardUsers, socket.id);
+        console.log('disconnected', Rooms);
     })
 });
 

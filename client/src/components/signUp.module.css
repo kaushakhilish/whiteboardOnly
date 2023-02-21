@@ -14,6 +14,24 @@
     justify-content: stretch;
     align-items: center;
 }
+.signUp form .userRoles{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* color: white; */
+    font-family: sans-serif;
+    margin: 10px;
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+/* .signUp form .userRoles label{
+    margin: 20px;
+} */
+.userRoles label > input{
+    /* margin: 20px; */
+}
 .signUp form input {
     margin: 5px 0;
     padding: 10px 20px;

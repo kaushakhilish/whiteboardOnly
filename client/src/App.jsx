@@ -3,7 +3,7 @@ import './App.css'
 import BoardContextProvider from './context/boardContext'
 import Whiteboard from './components/whiteboard'
 import SocketProvider from './context/socketProvider';
-import Home from './components/home';
+import Home from './components/homePage/home';
 import LogInPage from './components/logInPage';
 import SignUp from './components/signUp';
 import AppContextProvider from './context/appContext';

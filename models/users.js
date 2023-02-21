@@ -14,9 +14,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    roles: {
-        type: Array,
-        default: ['admin']
+    role: {
+        type: String,
+        required: true
     },
     date: {
         type: Date,

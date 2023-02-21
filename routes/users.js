@@ -28,6 +28,7 @@ router.post('/signUp', async (req, res) => {
     let userName = req.body.userName;
     let userEmail = req.body.email;
     let password = req.body.password;
+    let userRole = req.body.userRole;
 
     console.log(req.body)
     if (userName && userEmail && password) {
@@ -36,6 +37,7 @@ router.post('/signUp', async (req, res) => {
                 name: userName,
                 email: userEmail,
                 password: password,
+                role: userRole,
             });
             res.json(savedUser);
 

@@ -2,9 +2,9 @@ import React from 'react';
 // import buttonBoxStyles from './buttonBox.module.css';
 import { BsCircle, BsDiamond, BsTriangle, BsHexagon } from 'react-icons/bs'
 import { BiRectangle } from 'react-icons/bi'
-import ButtonBoxLayout from './utils/buttonBoxLayout';
-import ActionButton from './utils/actionButton';
-import { BUTTONS } from '../context/boardContext';
+import ButtonBoxLayout from '../utils/buttonBoxLayout';
+import ActionButton from '../utils/actionButton';
+import { BUTTONS } from '../../context/boardContext';
 
 const ShapeButtonBox = ({ selectedBtn, setSelectedBtn }) => {
 

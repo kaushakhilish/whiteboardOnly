@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { io } from "socket.io-client";
 import { SocketContext } from './socketProvider';
 export const BoardContext = createContext({});
-import { URL } from './appContext';
+import { AppContext, URL } from './appContext';
 
 //Shapes constants
 export const SHAPES = {
@@ -66,8 +66,11 @@ const BoardContextProvider = ({ children }) => {
     const [movingShape, setMovingShape] = useState(false);
     const [shapePropCompVals, setShapePropCompVals] = useState({});
     const [selectedImage, setSelectedImage] = useState(null);
+    const [boardUsers, setBoardUsers] = useState([]);
+
 
     const { socket, setSocket } = useContext(SocketContext);
+    const { user } = useContext(AppContext);
 
     useEffect(() => {
         console.log('board from context', whiteboard)
@@ -79,7 +82,7 @@ const BoardContextProvider = ({ children }) => {
             console.log('id', roomId)
             if (roomId && id) {
                 let newSocket = io(URL, {
-                    query: { roomId, id },
+                    query: { roomId, user: JSON.stringify({ id: user._id, role: user.role, userName: user.name, visible: user.visible }) },
                     transports: ['websocket'],
                 }
                 );
@@ -114,7 +117,9 @@ const BoardContextProvider = ({ children }) => {
             shapePropCompVals,
             setShapePropCompVals,
             selectedImage,
-            setSelectedImage
+            setSelectedImage,
+            boardUsers,
+            setBoardUsers
         }}>
             {children}
         </BoardContext.Provider>

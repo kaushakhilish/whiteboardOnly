@@ -1,7 +1,7 @@
 import React from 'react';
-import { BUTTONS, STROKE_SIZES } from '../context/boardContext';
-import ActionButton from './utils/actionButton';
-import ButtonBoxLayout from './utils/buttonBoxLayout';
+import { BUTTONS, STROKE_SIZES } from '../../context/boardContext';
+import ActionButton from '../utils/actionButton';
+import ButtonBoxLayout from '../utils/buttonBoxLayout';
 import { MdOutlineShowChart } from 'react-icons/md'
 import { TbPencil } from 'react-icons/tb'
 import { RiMarkPenLine } from 'react-icons/ri'

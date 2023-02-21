@@ -9,12 +9,12 @@ import { CgNotes } from 'react-icons/cg'
 import { GrUndo, GrRedo } from 'react-icons/gr'
 import ShapeButtonBox from './shapeButtonBox';
 import LinesButtonBox from './linesButtonBox';
-import ActionButton from './utils/actionButton';
+import ActionButton from '../utils/actionButton';
 import MoveNGrabButtonBox from './MoveNGrabButtonBox';
 import PencilBox from './pencilBox';
-import { BoardContext, BUTTONS, SHAPES } from '../context/boardContext';
-import erasorImg from '../assets/erasor.svg';
-import { URL } from '../context/appContext';
+import { BoardContext, BUTTONS, SHAPES } from '../../context/boardContext';
+import erasorImg from '../../assets/erasor.svg';
+import { URL } from '../../context/appContext';
 
 const ButtonBox = ({ board, isMousePressed, undoMove, redoMove, updateShapesOnDb, setEditInputPos, setShapes }) => {
     const {

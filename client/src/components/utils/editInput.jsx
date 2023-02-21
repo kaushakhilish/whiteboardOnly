@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import { BoardContext } from '../context/boardContext';
+import { BoardContext } from '../../context/boardContext';
 import styles from './editInput.module.css';
 
 const EditInput = ({ editInputPos, editInputChange, setTextShape }) => {

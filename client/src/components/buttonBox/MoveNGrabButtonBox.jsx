@@ -1,13 +1,12 @@
 import React from 'react';
-import ActionButton from './utils/actionButton';
-import ButtonBoxLayout from './utils/buttonBoxLayout';
-import { BUTTONS } from '../context/boardContext';
+import ActionButton from '../utils/actionButton';
+import ButtonBoxLayout from '../utils/buttonBoxLayout';
+import { BUTTONS } from '../../context/boardContext';
 import { BsCursor } from 'react-icons/bs';
 import { TbHandStop } from 'react-icons/tb';
 
 const MoveNGrabButtonBox = ({selectedBtn, setSelectedBtn}) => {
     function selectClickHandler(){
-        
         setSelectedBtn(BUTTONS.SELECT.SELECT)
     }
     function grabClickHandler(){

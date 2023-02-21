@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { BoardContext } from '../context/boardContext';
+import { BoardContext } from '../../context/boardContext';
 
 const SvgDefs = () => {
     const { selectedStrokeColor } = useContext(BoardContext);
