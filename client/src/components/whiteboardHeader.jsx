@@ -5,6 +5,7 @@ import styles from './whiteBoardHeader.module.css';
 import { URL } from '../context/appContext';
 import BoardUserList from './homePage/boardUserList';
 import ChatBox from './chats/chatBox';
+import PeerProvider from '../context/peerContext';
 
 const WhiteboardHeader = () => {
     const { user } = useContext(AppContext);
@@ -55,7 +56,9 @@ const WhiteboardHeader = () => {
                 >Add User</button>
                 <BoardUserList />
                 <button onClick={() => setShowChatBox(prv => !prv)}>Chat</button>
-                {showChatBox && <ChatBox />}
+                <PeerProvider >
+                    {showChatBox && <ChatBox />}
+                </PeerProvider>
             </div>
         </div>
     );

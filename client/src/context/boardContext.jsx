@@ -69,7 +69,7 @@ const BoardContextProvider = ({ children }) => {
     const [boardUsers, setBoardUsers] = useState([]);
 
 
-    const { socket, setSocket } = useContext(SocketContext);
+    const { socket, setSocket, setSocketId } = useContext(SocketContext);
     const { user } = useContext(AppContext);
 
     useEffect(() => {
@@ -88,12 +88,19 @@ const BoardContextProvider = ({ children }) => {
                 );
                 console.log('socket', newSocket)
                 if (newSocket) {
-                    console.log('socket', newSocket);
+                    // console.log('socket', newSocket);
+                    newSocket?.on('my_socketId', socketId => {
+                        setSocketId(socketId)
+                    })
                     setSocket(newSocket)
-                    return () => { newSocket.close() };
+                    return () => { 
+                        newSocket?.removeListener('my_socketId');
+                        newSocket.close() 
+                    };
                 }
             }
         }
+
     }, [whiteboard]);
 
     return (

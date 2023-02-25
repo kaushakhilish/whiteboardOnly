@@ -8,7 +8,7 @@ const BoardUserList = () => {
 
     return (
         <div style={{ position: 'relative' }}>
-            <button onClick={() => setShowList(prv => !prv)} className={styles.userListBtn}>{boardUsers[0].userName}</button>
+            <button onClick={() => setShowList(prv => !prv)} className={styles.userListBtn}>Board Users</button>
             {(showList && boardUsers) && <ul className={styles.BoardUserList}>
                 {boardUsers.map(user => {
                     if(user.visible){

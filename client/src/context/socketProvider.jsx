@@ -4,9 +4,10 @@ export const SocketContext = createContext(null);
 
 const SocketProvider = (props) => {
     const [socket, setSocket] = useState(null);
+    const [socketId, setSocketId] = useState(null);
 
     return (
-        <SocketContext.Provider value={{socket, setSocket}}>
+        <SocketContext.Provider value={{socket, setSocket, socketId, setSocketId}}>
             {props.children}
         </SocketContext.Provider>
     )

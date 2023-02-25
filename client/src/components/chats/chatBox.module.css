@@ -29,9 +29,15 @@
 .inputBox > input{
     padding: 5px 10px;
     border: 2px solid #ccc;
-    width: 70%;
+    width: 55%;
 }
 .sendBtn{
     border-radius: 4px !important;
     border-color: #ccc !important;
+}
+.callBtn{
+    padding: 8px 10px;
+}
+.callBtn:hover{
+    background-color: #eee;
 }
